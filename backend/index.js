@@ -1,29 +1,11 @@
 const express = require("express");
-const jwt = require("jsonwebtoken");
-const cors = require("cors");
 const app = express();
 
-app.use(express.json());
+const userRouter = require("./routes/user");
+const courseRouter = require("./routes/course");
 
-app.use(cors());
-
-//Create route skeletons for users
-
-app.post("/user-signup", (req, res) => {});
-
-app.post("/user-login", (req, res) => {});
-
-app.get("/user-courses", (req, res) => {});
-
-//Create route skeletons for admins
-
-app.post("/admin-signup", (req, res) => {});
-
-app.post("/admin-login", (req, res) => {});
-
-app.post("/admin-create-course", (req, res) => {});
-
-app.post("/admin-delete-course", (req, res) => {});
+app.use("/user", userRouter); //all routes starting with user are handled by userRouter
+app.use("/course", courseRouter); //all routes starting with course are handled by courseRouter
 
 //Mention which port the server is listening on for incoming requests for this app
 
