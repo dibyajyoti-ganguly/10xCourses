@@ -1,6 +1,8 @@
 const express = require("express");
 const courseRouter = express.Router();
 
+const { CourseModel, PurchasesModel } = require("../db");
+
 courseRouter.get("/preview", (req, res) => {
   res.json("No records to show");
 }); //see all courses
