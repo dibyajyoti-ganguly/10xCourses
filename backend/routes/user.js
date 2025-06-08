@@ -105,10 +105,18 @@ const userTokenDecoder = async (req, res, next) => {
   req.userId = userId;
 
   next();
-};
+}; //Middleware for token verfication done
 
-userRouter.get("/purchases", userTokenDecoder, (req, res) => {
-  res.json("User has made zero purchases");
+userRouter.get("/purchases", userTokenDecoder, async (req, res) => {
+  const userId = req.userId;
+
+  const purchases = await PurchasesModel.find({
+    userId: userId,
+  });
+
+  if (!purchases) return res.status(200).json("You have made no purchases");
+
+  res.status(200).json(purchases);
 });
-
-module.exports = userRouter;
+//route to fetch all user's purchases done
+module.exports = { userRouter, userTokenDecoder };

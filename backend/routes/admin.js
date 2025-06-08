@@ -105,7 +105,7 @@ const adminTokenDecoder = async (req, res, next) => {
   req.adminId = adminId;
 
   next();
-};
+}; //Middleware for token verification
 
 adminRouter.post("/course", adminTokenDecoder, async (req, res) => {
   try {
@@ -127,7 +127,7 @@ adminRouter.post("/course", adminTokenDecoder, async (req, res) => {
       error: e,
     });
   }
-});
+}); //route for admin to create a course
 
 adminRouter.put("/course", (req, res) => {});
 
