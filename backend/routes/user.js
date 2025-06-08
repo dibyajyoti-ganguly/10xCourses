@@ -88,8 +88,27 @@ userRouter.post("/login", userAuth, async (req, res) => {
   });
 }); //User login route completed
 
-userRouter.get("/purchases", (req, res) => {
-  res.json("No records to show");
+const userTokenDecoder = async (req, res, next) => {
+  const token = req.headers.authorization;
+  const decoded = jwt.verify(token, JWT_SECRET);
+
+  if (!decoded) return res.status(403).json("Missing token");
+
+  const userId = decoded.id;
+
+  const user = await UserModel.findOne({
+    _id: userId,
+  });
+
+  if (!user) return res.status(403).json("Invalid token");
+
+  req.userId = userId;
+
+  next();
+};
+
+userRouter.get("/purchases", userTokenDecoder, (req, res) => {
+  res.json("User has made zero purchases");
 });
 
 module.exports = userRouter;

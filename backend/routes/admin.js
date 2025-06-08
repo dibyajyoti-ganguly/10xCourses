@@ -9,7 +9,6 @@ const adminRouter = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET;
 
 const { AdminModel, CourseModel } = require("../db");
-const { Mongoose } = require("mongoose");
 
 adminRouter.use(express.json());
 
@@ -89,7 +88,7 @@ adminRouter.post("/login", adminAuth, async (req, res) => {
   });
 }); //admin login route completed
 
-const tokenDecoder = async (req, res, next) => {
+const adminTokenDecoder = async (req, res, next) => {
   const token = req.headers.authorization;
   const decoded = jwt.verify(token, JWT_SECRET);
 
@@ -108,7 +107,7 @@ const tokenDecoder = async (req, res, next) => {
   next();
 };
 
-adminRouter.post("/course", tokenDecoder, async (req, res) => {
+adminRouter.post("/course", adminTokenDecoder, async (req, res) => {
   try {
     const course_name = req.body.course_name;
     const description = req.body.description;
