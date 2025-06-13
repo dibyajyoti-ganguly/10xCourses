@@ -129,6 +129,22 @@ adminRouter.post("/course", adminTokenDecoder, async (req, res) => {
   }
 }); //route for admin to create a course
 
-adminRouter.put("/course", (req, res) => {});
+adminRouter.put("/course", adminTokenDecoder, async (req, res) => {
+  try {
+    const old_name = req.body.old_name;
+
+    const new_name = req.body.new_name;
+    const creatorId = req.adminId;
+
+    await CourseModel.updateOne(
+      { name: old_name, creatorId: creatorId },
+      { $set: { name: new_name } }
+    );
+
+    res.status(200).json("Course name successfully updated");
+  } catch (e) {
+    res.status(400).json(e);
+  }
+});
 
 module.exports = adminRouter;
